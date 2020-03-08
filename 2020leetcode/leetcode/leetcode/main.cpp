@@ -14,6 +14,7 @@
 #include <queue>
 #include <math.h>
 #include <fstream>
+#include <map>
 using namespace std;
  vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
      //每次选当前最右，最高点加入ans中，若当前遍历得出的最右点，非最高点（既和上次ans相同），则不加入Q中，等待后续处理
@@ -49,36 +50,25 @@ using namespace std;
      //等加入到ans时，再判断curx - h
      return res;
  }
-int main(int argc, const char * argv[]) {
-    // insert code here...
-//    vector<int> v1;
-//    v1.push_back(2);
-//    v1.push_back(9);
-//    v1.push_back(10);
-    int a[3] = {2,9,10};
-    int b[3] = {3,7,15};
-    int c[3] = {5,12,12};
-    int d[3] = {15,20,10};
-    int e[3] = {19,24,8};
-    vector<int> v1(a,a + 3);
-    vector<int> v2(b,b + 3);
-    vector<int> v3(c,c + 3);
-    vector<int> v4(d,d + 3);
-    vector<int> v5(e,e + 3);
-    vector<vector<int>> input;
-    input.push_back(v1);
-    input.push_back(v2);
-    input.push_back(v3);
-    input.push_back(v4);
-    input.push_back(v5);
-    vector<vector<int>> res;
-    res = getSkyline(input);
-    for(int i = 0; i < res.size(); i ++){
-        for(int j = 0 ; j < res[i].size() ; j++){
-            printf("%d ",res[i][j]);
+vector<int> twoSum(vector<int>& nums,int target){
+    map<int,int> mp ;
+    for(int i = 0;i < nums.size(); i ++){
+        if(mp.find(target - nums[i]) != mp.end()){
+            return vector<int>{mp[target - nums[i]],i};
         }
-        printf("\n");
+            mp.insert(pair<int,int>(nums[i],i));
+        
     }
-    //std::cout << "Hello, World!\n";
+    return vector<int>{-1,-1};
+}
+int main(int argc, const char * argv[]) {
+    vector<int> nums ={2,7,11,15};
+    int target = 9;
+    vector<int> result;
+    result = twoSum(nums,target);
+    for(int i = 0; i < result.size(); i++){
+        printf("%d ",result[i]);
+    }
+    printf("\n");
     return 0;
 }
