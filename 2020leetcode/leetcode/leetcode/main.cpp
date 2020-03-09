@@ -50,25 +50,52 @@ using namespace std;
      //等加入到ans时，再判断curx - h
      return res;
  }
-vector<int> twoSum(vector<int>& nums,int target){
-    map<int,int> mp ;
-    for(int i = 0;i < nums.size(); i ++){
-        if(mp.find(target - nums[i]) != mp.end()){
-            return vector<int>{mp[target - nums[i]],i};
+ struct ListNode {
+     int val;
+     ListNode *next;
+     ListNode(int x) : val(x), next(NULL) {}
+ };
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    int sum = 0;
+    ListNode* res = NULL;
+    ListNode** node = &res;
+    
+    while(l1 != NULL || l2 != NULL || sum > 0){
+        if(l1 != NULL){
+            sum = sum + l1 -> val;//注意listnode的遍历方式
+            l1 = l1 -> next;
         }
-            mp.insert(pair<int,int>(nums[i],i));
+        if(l2 != NULL){
+            sum = sum + l2 -> val;
+            l2 = l2 -> next;
+        }
+        (* node)= new ListNode(sum%10);
+        sum = sum / 10;
+        node = &((* node) -> next);
         
     }
-    return vector<int>{-1,-1};
+    
+    return res;
 }
 int main(int argc, const char * argv[]) {
-    vector<int> nums ={2,7,11,15};
-    int target = 9;
-    vector<int> result;
-    result = twoSum(nums,target);
-    for(int i = 0; i < result.size(); i++){
-        printf("%d ",result[i]);
+    ListNode *re1 = NULL,*re2 = NULL;
+    ListNode **node = &re1;
+    (* node) = new ListNode(2);
+    node = &((*node) -> next);
+    (* node) = new ListNode(4);
+    node = &((*node) -> next);
+    (* node) = new ListNode(3);
+    node = &re2;
+    (* node) = new ListNode(5);
+    node = &((* node) -> next);
+    (* node) = new ListNode(6);
+    node = &((* node) -> next);
+    (* node) = new ListNode(4);
+        
+    ListNode* res = addTwoNumbers(re1,re2);
+    while(res != NULL){
+        printf("%d  ",res -> val);
+        res = res -> next;
     }
-    printf("\n");
     return 0;
 }
