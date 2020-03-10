@@ -15,7 +15,11 @@
 #include <math.h>
 #include <fstream>
 #include <map>
+#include<stdlib.h>
 using namespace std;
+
+ 
+
  vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
      //每次选当前最右，最高点加入ans中，若当前遍历得出的最右点，非最高点（既和上次ans相同），则不加入Q中，等待后续处理
      int count = 0;
@@ -77,25 +81,36 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
     
     return res;
 }
-int main(int argc, const char * argv[]) {
-    ListNode *re1 = NULL,*re2 = NULL;
-    ListNode **node = &re1;
-    (* node) = new ListNode(2);
-    node = &((*node) -> next);
-    (* node) = new ListNode(4);
-    node = &((*node) -> next);
-    (* node) = new ListNode(3);
-    node = &re2;
-    (* node) = new ListNode(5);
-    node = &((* node) -> next);
-    (* node) = new ListNode(6);
-    node = &((* node) -> next);
-    (* node) = new ListNode(4);
-        
-    ListNode* res = addTwoNumbers(re1,re2);
-    while(res != NULL){
-        printf("%d  ",res -> val);
-        res = res -> next;
+int lengthOfLongestSubstring(string s) {
+    int len = s.length();
+    //printf("%d\n",len);
+    map<char,int> mp; // char + index，其中index为char对应字符的next下标，保证计算不重复长度时不会出错。
+    int cur = 0,i= 0;// cur 表示 循环index,i 表示上次重复位置 ；
+    int ans = 0;
+    map<char,int>::iterator iter;
+    for(int cur = 0; cur < len; cur ++){
+        char c = s[cur];
+        iter = mp.find(c);
+        if(iter != mp.end()){
+            i = i > iter -> second ? i : iter ->second;
+            iter -> second = cur + 1;
+        }
+        else{
+            
+            mp.insert(make_pair(c,cur + 1));//注意，此处push cur要加1
+        }
+        ans = ans > (cur - i + 1) ? ans : (cur - i + 1);
     }
+    return ans;
+}
+#define INF 0x7fffffff
+int main(int argc, const char * argv[]) {
+    string str;
+    while(getline(cin,str)){
+        int len = lengthOfLongestSubstring(str);
+        printf("%d\n",len);
+    }
+        printf("hello lemon\n");
+
     return 0;
 }
