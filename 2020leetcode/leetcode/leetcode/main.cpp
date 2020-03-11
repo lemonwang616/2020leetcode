@@ -103,14 +103,72 @@ int lengthOfLongestSubstring(string s) {
     }
     return ans;
 }
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    int m = nums1.size(),n = nums2.size();
+    //采用二分法
+    if(m > n){  //保证nums1 <= nums2，通过nums1下标来找nums2下标,若nums1 > nums2,计算出的nums2下标可能为负数
+        vector<int> temp = nums1;
+        nums1 = nums2;
+        nums2 = temp;
+        int templ = m;
+        m = n;
+        n = templ;
+    }
+    /*
+     遍历nums1来寻找i，j=halflen-i,i,j分别把 nums1,nums分成左右两部分，
+     nums1[0]..nums1[i-1],nums1[i]..nums1[m - 1]和 nums2[0]..nums2[j - 1],nums[j]..num[n - 1]，其中nums1左+nums2左 = nums2右+nums右(+1) 奇数时左>右
+     寻找满足A[i - 1] < B[j] && B[j - 1] < A[j]
+     当 n + m = 偶数时，此时 i + j = m - i + n - j;即  j = (m+n)/2-i
+     当 n + m = 奇数时，设左部分>右部分,则有 i + j - 1 = m - i + n - j;即j=(m+n+1)/2-i
+     当m+n=偶数时，(m+n)/2=(m+n+1)/2，故halflen = （m+n+1)/2
+     */
+    int iMin = 0,iMax = m,halflen = (m + n + 1) / 2;
+    while(iMin <= iMax){
+        int i = (iMin + iMax) / 2;
+        int j = halflen - i;
+        if(i > iMin && nums1[i - 1] > nums2[j]){//先要检验下标合法性&&左1max>右2min
+            iMax = iMax - 1;//要把i变小
+        }
+        else if(i < iMax && nums1[i] < nums2[j-1]){//下标合法&&左2max>右1min
+            iMin = iMin + 1;
+        }
+        else{//i match(1)左1max<右2min && 左2min<右1max (2)special condition
+            //printf("i:%d j:%d m:%d n:%d halflen=%d\n",i,j,m,n,halflen);
+            int maxleft;//若为n+m 为odd,直接返回
+            if(i == 0){
+                maxleft = nums2[j - 1];//左1为空
+            }
+            else if(j == 0){
+                maxleft = nums1[i - 1];//左2为空
+            }
+                else{
+                    maxleft = nums1[i - 1] > nums2[j - 1]? nums1[i - 1]: nums2[j - 1];
+                }
+            if((n + m) % 2 == 1){
+                return maxleft
+                \;
+            }
+            int minright;//n+m为even,return(maxleft+minright)/2.0
+            if(i == m){
+                minright = nums2[j];//右1为空
+            }
+            else if(j == n){
+                minright = nums1[i]; //右2为空
+            }
+                else{
+                    minright = nums1[i] < nums2[j] ? nums1[i] : nums2[j];
+                }
+            return (maxleft + minright)/2.0;
+        }
+    }
+    return 0.0;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    string str;
-    while(getline(cin,str)){
-        int len = lengthOfLongestSubstring(str);
-        printf("%d\n",len);
-    }
-        printf("hello lemon\n");
-
+    
+    vector<int> a ={1,2,7,8,9,10};
+    vector<int> b = {2,3,4,5};//1 2 2 3 4 6
+    double ans = findMedianSortedArrays(a, b);
+    printf("%f\n",ans);
     return 0;
 }
