@@ -145,8 +145,7 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
                     maxleft = nums1[i - 1] > nums2[j - 1]? nums1[i - 1]: nums2[j - 1];
                 }
             if((n + m) % 2 == 1){
-                return maxleft
-                \;
+                return maxleft;
             }
             int minright;//n+m为even,return(maxleft+minright)/2.0
             if(i == m){
@@ -163,12 +162,36 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
     }
     return 0.0;
 }
+string longestPalindrome(string s){
+    int len = s.length();
+    int max = 0,ibegin = 0,iend = 0;
+    bool flag[len][len];//flag[i][j]记录从str从i到j是否是回文序列.a
+    /* str[i] == str[j] && flag[i+1][j-1]==true,则flag[i][j]也为回文序列,故i递减遍历，j递增遍历*/
+    for(int i = 0;i < len;i ++){
+        for(int j = 0;j < len;j ++){
+            flag[i][j] = false;
+        }
+    }
+    for(int i = len - 1;i >= 0;i --){
+        for(int j = i;j < len;j ++){
+            if(s[i] == s[j] && (j-i <=2 || flag[i+1][j-1] == true)){
+                flag[i][j] = true;
+                if(j- i >= max){
+                    max = j - i + 1;
+                    ibegin = i;
+                    iend = j;
+                }
+            }
+        }
+    }
+    return s.substr(ibegin,max);
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    
-    vector<int> a ={1,2,7,8,9,10};
-    vector<int> b = {2,3,4,5};//1 2 2 3 4 6
-    double ans = findMedianSortedArrays(a, b);
-    printf("%f\n",ans);
+    string str = "abcdedcba";
+    int len = (int)(str.size());
+    cout<<len<<endl;
+    string res = longestPalindrome(str);
+    printf("%s\n",res.c_str());
     return 0;
 }
