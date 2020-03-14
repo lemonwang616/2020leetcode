@@ -186,12 +186,35 @@ string longestPalindrome(string s){
     }
     return s.substr(ibegin,max);
 }
+string convert(string s, int numRows) {
+    if(numRows == 1)
+        return s;
+    string res;
+    int len = s.size();
+    int cur = 2* numRows - 2;
+    for(int i = 0;i < numRows; i ++){
+        for(int j = 0;i + j < len;j = j + cur){
+            res +=s[j+i];
+            if(i != 0 && i != numRows - 1 && cur + j - i < len){
+                res += s[cur+j-i];
+            }
+        }
+    }
+    return res;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    string str = "abcdedcba";
-    int len = (int)(str.size());
-    cout<<len<<endl;
-    string res = longestPalindrome(str);
+    string str = "PAYPALISHIRING";
+    string res = convert(str,4);
     printf("%s\n",res.c_str());
+    cout<<"hhh"<<endl;
+    /*
+    0123456789 10 11 12 13
+    PAYPALISHI R  I  N  G
+    P     I     N
+    A   L S   I G
+    Y A   H R
+    P     I
+     */
     return 0;
 }
