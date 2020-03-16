@@ -202,12 +202,22 @@ string convert(string s, int numRows) {
     }
     return res;
 }
+int reverse(int x){
+    long long res = 0;
+    while(x != 0){
+        res = 10 * res + x % 10;
+        x /= 10;
+    }
+    return (res > INT_MAX || res < INT_MIN) ? 0 : res;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    string str = "PAYPALISHIRING";
-    string res = convert(str,4);
-    printf("%s\n",res.c_str());
-    cout<<"hhh"<<endl;
+    int num;
+    while(scanf("%d",&num) != EOF){
+        int res = reverse(num);
+        printf("%d\n",res);
+    }
+    printf("lemon\n");
     /*
     0123456789 10 11 12 13
     PAYPALISHI R  I  N  G
