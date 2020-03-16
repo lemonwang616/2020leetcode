@@ -210,11 +210,50 @@ int reverse(int x){
     }
     return (res > INT_MAX || res < INT_MIN) ? 0 : res;
 }
+int myAtoi(string str) {
+    long long res = 0;
+    int len = str.size();
+    bool firstsign = true;
+    int  sign = 1;
+    for(int i = 0;i < len;i ++){
+        if(firstsign == true && str[i] == ' '){
+            continue;
+        }
+        else if(firstsign == true && (str[i] == '-' || str[i] == '+')){
+            firstsign = false;
+            if(str[i] == '-'){
+                sign = -1;
+            }
+            
+        }
+        else if(str[i] >= '0' && str[i] <= '9'){
+            if(firstsign == true)
+            {
+                firstsign = false;
+            }
+            res = res * 10 + (str[i] - '0');
+            if(res * sign > INT_MAX)
+                return INT_MAX;
+            if(res * sign < INT_MIN)
+                return INT_MIN;
+        }
+        else
+            return res * sign;
+    }
+    res = res * sign;
+    if(res > INT_MAX){
+        res = INT_MAX;
+    }
+    if(res < INT_MIN){
+        res = INT_MIN;
+    }
+    return res;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    int num;
-    while(scanf("%d",&num) != EOF){
-        int res = reverse(num);
+    string str;
+    while(getline(cin,str)){
+        int res = myAtoi(str);
         printf("%d\n",res);
     }
     printf("lemon\n");
