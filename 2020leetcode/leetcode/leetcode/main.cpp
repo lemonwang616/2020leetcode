@@ -249,21 +249,34 @@ int myAtoi(string str) {
     }
     return res;
 }
+bool isMatch(string s, string p) {
+    int m = s.size(),n = p.size();
+    vector<vector<bool>> dp(m + 1,vector<bool>(n+1,false));
+    dp[0][0] = true;
+    for(int i = 0; i <= m; i ++){
+        for(int j = 1; j <= n; j++){
+            if(p[j-1] == '*'){
+                dp[i][j] = dp[i][j - 2] ||
+                (i && dp[i - 1][j] && (s[i - 1] == p[j - 2] || p[j - 2] == '.'));
+            }
+            else{
+                dp[i][j] = i && dp[i - 1][j - 1] &&
+                (s[i - 1] == p[j - 1] || p[j - 1] == '.');
+            }
+        }
+    }
+    return dp[m][n];
+    /* special condition for dp[i-1][j] = false
+      123456
+      adacbbc
+      adc*c
+        i = 4,j=4;
+     */
+
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    string str;
-    while(getline(cin,str)){
-        int res = myAtoi(str);
-        printf("%d\n",res);
-    }
-    printf("lemon\n");
-    /*
-    0123456789 10 11 12 13
-    PAYPALISHI R  I  N  G
-    P     I     N
-    A   L S   I G
-    Y A   H R
-    P     I
-     */
+    int n = INT_MAX ;
+    printf("%d\n",n);
     return 0;
 }
