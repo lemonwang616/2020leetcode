@@ -274,9 +274,22 @@ bool isMatch(string s, string p) {
      */
 
 }
+int maxArea(vector<int>& height) {
+    int maxarea = 0;
+    for(int i = 0; i < height.size(); i ++){
+        for(int j = i + 1; j < height.size();j ++){
+            int temp = (height[i] < height[j] ? height[i] : height[j])*(j -i);
+            maxarea = maxarea > temp ? maxarea : temp;
+        }
+    }
+    return maxarea;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    int n = INT_MAX ;
-    printf("%d\n",n);
+    int a[9] = {1,8,6,2,5,4,8,3,7};
+    vector<int> vec(a,a+9);
+    int maxarea = maxArea(vec);
+    printf("%d\n",maxarea);
+    printf("hello lemon\n");
     return 0;
 }
