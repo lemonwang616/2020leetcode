@@ -325,16 +325,48 @@ string longestCommonPrefix(vector<string>& strs) {
     }
     return prefix;
 }
+vector<vector<int>> threeSum(vector<int>& nums) {
+    int len = nums.size();
+    vector<vector<int>> rs;
+    if(len == 0)
+        return rs;
+    sort(nums.begin(),nums.end());
+    for(int i = 0; i < len; i ++){
+        if(i != 0 && nums[i] == nums[i - 1]){
+           continue;//去重 if-continue去重比while循环简单，不用判断下标
+        }
+        int j = i + 1, k = len - 1;
+        while(j < k){
+            if(nums[i] + nums[j] + nums[k] == 0){
+                rs.push_back({nums[i],nums[j],nums[k]});
+                j ++;
+                k --;
+                while(j < k && nums[j] == nums[j - 1]){//j < k可保证三元组&&数组下标
+                    j ++;
+                }
+                while(j < k && nums[k] == nums[k + 1]){
+                    k --;
+                }
+            }
+            else if(nums[i] + nums[j] + nums[k] > 0){
+                k --;
+            }
+            else{
+                j ++;
+            }
+        }
+
+    }
+    return rs;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    string str;
-    str = "abcdefg";
-    vector<string> vec;
-    vec.push_back("flower");
-    vec.push_back("flow");
-    vec.push_back("flig");
-    string res = longestCommonPrefix(vec);
-    printf("%s\n",res.c_str());
+    vector<int> vec = {-1,0,1,2,-1,-4};
+    vector<vector<int>> res = threeSum(vec);
+    printf("%d\n",res.size());
+    for(int i = 0;i < res.size();i ++){
+        printf("%d %d %d\n",res[i][0],res[i][1],res[i][2]);
+    }
     printf("hello lemon\n");
     return 0;
 }
