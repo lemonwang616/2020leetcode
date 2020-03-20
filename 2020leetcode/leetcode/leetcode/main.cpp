@@ -284,12 +284,57 @@ int maxArea(vector<int>& height) {
     }
     return maxarea;
 }
+int romanToInt(string s) {
+    int n = s.length();
+    if(n == 0) return 0;
+    map<char,int> mp;
+    mp.insert(pair<char, int>('I',1));
+    mp.insert(pair<char,int>('V',5));
+    mp.insert(pair<char, int>('X',10));
+    mp.insert(pair<char,int>('L',50));
+    mp.insert(pair<char,int>('C',100));
+    mp.insert(pair<char, int>('D',500));
+    mp.insert(pair<char, int>('M',1000));
+    int res = 0;
+    int index = n - 1;
+    while(index >= 0){
+        int t = mp.find(s[index])->second;
+        res += t;
+        if(index != 0){ //judge next
+            int next = mp.find(s[index - 1]) -> second;
+            if(next < t){
+                res -= next;
+                index --;
+            }
+        }
+        index --;
+    }
+    return res;
+}
+string longestCommonPrefix(vector<string>& strs) {
+    int len = strs.size();
+    if(len == 0)
+        return "";
+    string prefix = strs[0];
+    for(int i = 1; i < len; i ++){
+        while(strs[i].find(prefix) != 0){
+            prefix = prefix.substr(0,prefix.size() - 1);
+        }
+        if(prefix.size() == 0)
+            return "";
+    }
+    return prefix;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    int a[9] = {1,8,6,2,5,4,8,3,7};
-    vector<int> vec(a,a+9);
-    int maxarea = maxArea(vec);
-    printf("%d\n",maxarea);
+    string str;
+    str = "abcdefg";
+    vector<string> vec;
+    vec.push_back("flower");
+    vec.push_back("flow");
+    vec.push_back("flig");
+    string res = longestCommonPrefix(vec);
+    printf("%s\n",res.c_str());
     printf("hello lemon\n");
     return 0;
 }
