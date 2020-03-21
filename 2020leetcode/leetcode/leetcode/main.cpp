@@ -380,14 +380,6 @@ void getlettercombination(string digits,string str,int n,int cur){
     }
 }
 vector<string> letterCombinations(string digits) {
-//    mp.insert(make_pair('2', "abc"));
-//    mp.insert(make_pair('3', "def"));
-//    mp.insert(make_pair('4', "ghi"));
-//    mp.insert(make_pair('5', "jkl"));
-//    mp.insert(make_pair('6', "mno"));
-//    mp.insert(make_pair('7', "pqrs"));
-//    mp.insert(make_pair('8', "tuv"));
-//    mp.insert(make_pair('9', "wxyz"));
     int len = digits.size();
     if( len == 0)
         return vec;
@@ -395,14 +387,49 @@ vector<string> letterCombinations(string digits) {
     return vec;
 }
 
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    if( head -> next == NULL && n == 1){
+        return NULL;
+    }
+    ListNode* p = head;
+    ListNode* q = head;
+    while(-- n>= 0){
+        p = p -> next;
+        if(p == NULL)
+            p = head;
+    }
+    printf("P:%d\n",p -> val);
+    while(p ->next != NULL){
+        p = p -> next;
+        q = q -> next;
+    }
+     printf("q:%d\n",q -> val);
+    if(q -> next == NULL){
+        head = head -> next;
+    }
+    else{
+        q -> next = q ->next -> next;
+    }
+    return head;
+}
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-   // vector<int> vec = {-1,0,1,2,-1,-4};
-    string digits = "23";
-    vector<string> vec = letterCombinations(digits);
-    printf("num : %d\n",vec.size());
-    for(int i = 0; i < vec.size(); i ++){
-        printf("%s\n",vec[i].c_str());
+    ListNode *l = NULL;//保证l为开始
+    ListNode** node = &l;
+    (*node) = new ListNode(1);
+    node = &((*node) -> next);
+//    (*node) = new ListNode(2);
+//    node = &((*node) -> next);
+//    (*node) = new ListNode(3);
+//    node = &((*node) -> next);
+//    (*node) = new ListNode(4);
+//    node = &((*node) -> next);
+//    (*node) = new ListNode(5);
+//    node = &((*node) -> next);
+    ListNode *res = removeNthFromEnd(l, 1);
+    while(res != NULL){
+        printf("%d\n",res -> val);
+        res = res -> next;
     }
     printf("hello lemon\n");
     return 0;
