@@ -359,13 +359,50 @@ vector<vector<int>> threeSum(vector<int>& nums) {
     }
     return rs;
 }
+//map<char,string> mp;
+
+vector<string> vec;
+void getlettercombination(string digits,string str,int n,int cur){
+    string table[] = {"","","abc","def","ghi","jkl","mno",
+    "pqrs","tuv","wxyz"};
+    string t = table[digits[cur] - '0'];
+    if(cur == n - 1)
+       {//做最后处理，同时加入vec；
+           
+           for(int i = 0; i < t.size(); i ++){
+               vec.push_back(str + t[i]);
+           }
+       }
+    else{
+        for(int i = 0; i < t.size(); i ++){
+            getlettercombination(digits, str + t[i], n, cur + 1);
+        }
+    }
+}
+vector<string> letterCombinations(string digits) {
+//    mp.insert(make_pair('2', "abc"));
+//    mp.insert(make_pair('3', "def"));
+//    mp.insert(make_pair('4', "ghi"));
+//    mp.insert(make_pair('5', "jkl"));
+//    mp.insert(make_pair('6', "mno"));
+//    mp.insert(make_pair('7', "pqrs"));
+//    mp.insert(make_pair('8', "tuv"));
+//    mp.insert(make_pair('9', "wxyz"));
+    int len = digits.size();
+    if( len == 0)
+        return vec;
+    getlettercombination(digits, "", len, 0);
+    return vec;
+}
+
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    vector<int> vec = {-1,0,1,2,-1,-4};
-    vector<vector<int>> res = threeSum(vec);
-    printf("%d\n",res.size());
-    for(int i = 0;i < res.size();i ++){
-        printf("%d %d %d\n",res[i][0],res[i][1],res[i][2]);
+   // vector<int> vec = {-1,0,1,2,-1,-4};
+    string digits = "23";
+    vector<string> vec = letterCombinations(digits);
+    printf("num : %d\n",vec.size());
+    for(int i = 0; i < vec.size(); i ++){
+        printf("%s\n",vec[i].c_str());
     }
     printf("hello lemon\n");
     return 0;
