@@ -412,21 +412,100 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
     }
     return head;
 }
+bool isValid(string s) {
+    int len = s.size();
+    if(len == 0)
+        return true;
+    stack<char> sp;
+    for(int i = 0;i < len;i++){
+        if(s[i] == '('|| s[i] == '[' || s[i] == '{'){//进栈
+            sp.push(s[i]);
+        }
+        else{//出栈
+            if(sp.empty() == true)
+                return false;
+            char c = sp.top();
+            sp.pop();
+            switch (s[i]) {
+                case ')':
+                    if(c == '(')
+                     break;
+                    else
+                        return false;
+                case ']':
+                    if(c == '[')
+                        break;
+                    else
+                        return false;
+                case '}':
+                    if(c == '{')
+                        break;
+                    else
+                        return false;
+            }
+        }
+    }
+    if(sp.empty() == true)
+        return true;
+    else
+        return false;
+}
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    ListNode* h;
+    ListNode* r;
+    if(l1 == NULL && l2 == NULL)
+        return NULL;
+    if(l1 == NULL)
+        return  l2;
+    if(l2 == NULL)
+        return l1;
+    if(l1 -> val < l2 -> val){//不带头链表，先确定头指针，再确定遍历的指针.
+        h = l1;
+        r = h;
+        l1 = l1 -> next;
+    }
+    else{
+        h = l2;
+        r = h;
+        l2 = l2 -> next;
+    }
+    while(l1 != NULL && l2 != NULL){
+        if(l1 -> val < l2 -> val){
+            r -> next = l1;
+            r = r -> next;
+            l1 = l1 -> next;
+        }
+        else{
+            r -> next = l2;
+            r = r -> next;
+            l2 = l2 -> next;
+        }
+    }
+    r -> next = l1 ? l1 : l2;
+    return h;
+ }
 #define INF 0x7fffffff
 int main(int argc, const char * argv[]) {
-    ListNode *l = NULL;//保证l为开始
-    ListNode** node = &l;
+    ListNode *l;
+    ListNode* *node = &l;
     (*node) = new ListNode(1);
     node = &((*node) -> next);
-//    (*node) = new ListNode(2);
-//    node = &((*node) -> next);
-//    (*node) = new ListNode(3);
-//    node = &((*node) -> next);
-//    (*node) = new ListNode(4);
-//    node = &((*node) -> next);
-//    (*node) = new ListNode(5);
-//    node = &((*node) -> next);
-    ListNode *res = removeNthFromEnd(l, 1);
+    (*node) = new ListNode(2);
+    node = &((*node) -> next);
+    (*node) = new ListNode(4);
+    node = &((*node) -> next);
+    (*node) = new ListNode(7);
+    node = &((*node) -> next);
+    ListNode *l2;
+    node = &l2;
+    (*node) = new ListNode(1);
+    node = &((*node) -> next);
+    (*node) = new ListNode(3);
+    node = &((*node) -> next);
+    (*node) = new ListNode(4);
+    node = &((*node) -> next);
+
+    ListNode *res = mergeTwoLists(l,l2);
     while(res != NULL){
         printf("%d\n",res -> val);
         res = res -> next;
